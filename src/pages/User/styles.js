@@ -52,7 +52,19 @@ export const Starred = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+export const FavoriteContainer = styled.View`
+  flex: 1;
+  padding: 10px 0;
+  margin-top: 5px;
+  align-items: center;
+  justify-content: center;
 
+`;
+export const FavoriteText = styled.Text`
+  font-size: 13px;
+  color: #333;
+
+`;
 export const OwnerAvatar = styled.Image`
   height: 42px;
   width: 42px;

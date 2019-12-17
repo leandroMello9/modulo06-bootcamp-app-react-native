@@ -22,10 +22,12 @@ import api from '../../services/api';
 export default class Main extends Component {
   state = {
     users: [],
-    newUser: 'diego3g',
-    loader: false
+    newUser: '',
+    loader: false,
+    error : false
   }
   async componentDidMount() {
+
     const users = await AsyncStorage.getItem('users')
     if (users) {
       this.setState({users: JSON.parse(users)})
@@ -41,27 +43,47 @@ export default class Main extends Component {
   handleAddUser = async () => {
     this.setState({loader: true})
    const { newUser,users} = this.state;
-   const response = await api.get(`/users/${newUser}`);
+   const filterUser = users.filter(element => element.login === newUser);
+   console.log('Filter', filterUser);
+   if (filterUser.length > 0 || this.state.newUser === '') {
+     this.setState({error: true})
 
-   const data = {
-     id: response.data.id,
-     name: response.data.name,
-     login: response.data.login,
-     bio: response.data.bio,
-     avatar: response.data.avatar_url
-   }
-   this.setState({
-     users: [...users, data],
-     newUser: '',
-     loader: false
-    })
+
+     this.setState({
+       users: [...users],
+       newUser: '',
+       loader: false
+      })
+
+    } else if(filterUser.length == 0) {
+      const response = await api.get(`/users/${newUser}`);
+        const data = {
+          id: response.data.id,
+          name: response.data.name,
+          login: response.data.login,
+          bio: response.data.bio,
+          avatar: response.data.avatar_url
+        }
+        this.setState({
+          users: [...users, data],
+          newUser: '',
+          loader: false
+         })
+
+    }
+
+
+
+
+
+
 
 
    Keyboard.dismiss()
   }
 
   render() {
-    const {users, newUser, loader} = this.state;
+    const {users, newUser, loader,error} = this.state;
 
 
     return (
@@ -69,7 +91,8 @@ export default class Main extends Component {
         <Form>
         <Input autoCorret={false}
           autoCapitalize = "none"
-          placeholder = "Adicionar Usuario"
+          placeholder = {error ? 'Error!!, usuario já cadastrado' : 'Adicionar Usuario'}
+          error={error}
           value = {newUser}
           onChangeText = {text => this.setState({ newUser: text })}
           returnKeyType = "send"
@@ -84,7 +107,7 @@ export default class Main extends Component {
         </Form>
         <List
         data ={users}
-        KeyExtractor={user => user.login}
+        keyExtractor={user => String(user.id)}
         renderItem = {({ item }) => (
           <User>
             <Avatar source = {{uri: item.avatar}}></Avatar>

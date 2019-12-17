@@ -18,6 +18,7 @@ export const Form = styled.View`
 `;
 export const Input = styled.TextInput.attrs({
   placeholderTextColor: '#999'
+
 }) `
   flex: 1;
   height: 40px;
@@ -25,6 +26,7 @@ export const Input = styled.TextInput.attrs({
   border-radius : 4px;
   padding: 0px 15px;
   border: 1px solid #eee;
+
 `;
 export const SubmitButton = styled(RectButton) `
   justify-content: center;

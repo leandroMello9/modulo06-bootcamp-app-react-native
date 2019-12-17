@@ -2,7 +2,18 @@ import React from 'react';
 
 import api from '../../services/api';
 
- import { Container, Header, Avatar, Bio, Name, OwnerAvatar,Starred,Info, Title,Author,Stars, Loader, LoaderContainer } from './styles';
+ import {
+   Container,
+   Header,
+   Avatar,
+    Bio,
+    Name,
+    OwnerAvatar,
+    Starred,Info,
+    Title,
+    Author
+    ,Stars,
+    Loader, LoaderContainer,FavoriteContainer, FavoriteText } from './styles';
 
 export default class User extends React.Component {
   state = {
@@ -33,10 +44,12 @@ export default class User extends React.Component {
       <Header>
         <Avatar source = {{uri: user.avatar}}></Avatar>
         <Name>{user.name}</Name>
-        <Bio>{user.bio}</Bio>
+        <Bio>{user.bio ? user.bio : 'Sem Bio'}</Bio>
       </Header>
       <>
-
+      <FavoriteContainer>
+        <FavoriteText>Favorites</FavoriteText>
+      </FavoriteContainer>
       {this.state.loader ? <LoaderContainer>
         <Loader/>
       </LoaderContainer>: (
